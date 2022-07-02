@@ -1,0 +1,19 @@
+{
+  "name": "esp-epaper-monitor-server",
+  "version": "1.0.0",
+  "description": "Generates Image files and provides then for the epaper client",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mva-one/esp-epaper-monitor-server.git"
+  },
+  "author": "mva-one",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mva-one/esp-epaper-monitor-server/issues"
+  },
+  "homepage": "https://github.com/mva-one/esp-epaper-monitor-server#readme"
+}
