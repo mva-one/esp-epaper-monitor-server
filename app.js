@@ -1,4 +1,5 @@
 import express from 'express';
+import ModbusRTU from 'modbus-serial';
 
 const app = express();
 const router = express.Router();
@@ -14,12 +15,23 @@ app.set('view engine', 'pug');
 app.use('/', router);
 
 router.get('/', async (req, res) => {
-    res.render('index', {title: 'Gctl ALPHA'});
+    res.render('index', {title: 'Epaper ALPHA'});
 });
 
+var mb_client_tp10 = new ModbusRTU();
+var modbusdata;
+mb_client_tp10.connectTCP("192.168.66.122", { port: 502 });
+mb_client_tp10.setID(3);
+
+setInterval(() => {
+    mb_client_tp10.readInputRegisters(30775, 2, function(err, data) {
+        modbusdata = data.data;
+        console.log("TP5 " + data.data);
+    });
+}, 10000);
+
 router.get('/data', async (req, res) => {
-    const response_json = {'power': 500, 'voltage': 24, 'weather': 'sunny'}
-    res.json(response_json);
+    res.json(modbusdata);
 });
 
 const server = app.listen(3001, () => {
