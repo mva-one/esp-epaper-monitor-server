@@ -4,13 +4,13 @@ const app = express();
 const router = express.Router();
 
 const dummyData = {
-  timestamp: '16:52:11',
-  prod1: 3500,
+  timestamp: '21:52:11',
+  prod1: 500,
   prod2: 1500,
-  prod: 1000,
-  use: 2000,
-  grid: -3000,
-  aut: 100
+  prod: 2000,
+  use: 3500,
+  grid: 1500,
+  aut: 57
 }
 
 // serve requests from content in static directory

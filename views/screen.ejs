@@ -4,7 +4,7 @@
     <head>
         <title>ESP-Epaper</title>
         <link rel="icon" type="image/x-icon" href="/favicon.png">
-        <link rel="stylesheet" href="/screen.css">
+        <link rel="stylesheet" href="screen.css">
     </head>
 
     <body>
@@ -16,37 +16,41 @@
                 <%= new Date(); %></p>
             <div class="screen-container">
                 <div class="left-container">
-                    <table>
+                    <table class="data-table">
                         <tr>
                             <td class="data-name">Produktion:</td>
-                            <td class="data-value"><b><%= data.prod %></b></td>
+                            <td class="large data-value"><b> <%= data.prod %>  </b></td>
                             <td class="data-unit"><b>W</b></td>
                         </tr>
-                        <tr class="data-small">
-                            <td class="data-name">Ost:</td>
-                            <td class="data-value"><%= data.prod1 %></td>
-                            <td class="data-unit">W</td>
+                        <tr>
+                            <td class="leftspace small data-name">Ost:</td>
+                            <td class="data-value"> <%= data.prod1 %>  </td>
+                            <td class="small data-unit">W</td>
                         </tr>
-                        <tr class="data-small">
-                            <td class="data-name">Süd + West:</td>
-                            <td class="data-value"><%= data.prod2 %></td>
-                            <td class="data-unit">W</td>
+                        <tr>
+                            <td class="leftspace small data-name">Süd + West:</td>
+                            <td class="data-value"> <%= data.prod2 %> </td>
+                            <td class="small data-unit">W</td>
                         </tr>
                         <tr>
                             <td class="data-name">Eigenbedarf:</td>
-                            <td class="data-value"><b><%= data.use %></b></td>
+                            <td class="large data-value"><b> <%= data.use %> </b></td>
                             <td class="data-unit"><b>W</b></td>
                         </tr>
-                        <tr class="data-summary-neg">
-                            <td class="data-summary-val"><%= data.grid %> </td>
+                    </table>
+                    <table class="<% if (data.grid >= 0) { %> negative <% } %> grid-balance">
+                        <tr>
+                            <td class="grid-balance-value"><%= Math.abs(data.grid) %> </td>
+                            <td class="grid-balance-unit">W</td>
                         </tr>
                     </table>
+                    <p class="grid-status"><%if(data.grid<0){%>Einspeisung<%}else{%>Netzbezug<%}%></p>
                 </div>
                 <div class="right-container">
-
+                    
                 </div>
                 <div class="bottom-container">
-
+                    <p>zul. aktualisiert: <%= data.timestamp %> </p>
                 </div>
             </div>
         </div>
