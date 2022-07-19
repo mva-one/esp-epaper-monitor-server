@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>ESP-Epaper</title>
+        <link rel="icon" type="image/x-icon" href="/favicon.png">
+        <link rel="stylesheet" href="index.css">
+    </head>
+
+    <body>
+        <div id="maindiv">
+            <h1>ESP-Epaper-Screen</h1>
+            <p>Debug. The data is:
+                <%= JSON.stringify(data) %></p>
+            <p>The timestamp is:
+                <%= new Date(); %></p>
+            <iframe src="/screen"></iframe>
+        </div>
+    </body>
+
+</html>
