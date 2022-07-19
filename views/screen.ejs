@@ -3,55 +3,173 @@
 
     <head>
         <title>ESP-Epaper</title>
-        <link rel="icon" type="image/x-icon" href="/favicon.png">
-        <link rel="stylesheet" href="screen.css">
+        <link
+        rel="icon" type="image/x-icon" href="/favicon.png">
+    <!-- <link rel="stylesheet" href="screen.css"> -->
     </head>
 
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+            width: 400px;
+            height: 300px;
+            margin: 0;
+        }
+
+        .screen-container {
+            position: relative;
+            background-color: white;
+            color: black;
+            width: 400px;
+            height: 300px;
+        }
+
+        .left-container {
+            width: 250px;
+            height: 270px;
+            font-size: 25px;
+        }
+
+        .right-container {
+            width: 150px;
+            height: 270px;
+            position: absolute;
+            left: 250px;
+            top: 0;
+        }
+
+        .bottom-container {
+            width: 400px;
+            height: 30px;
+            position: absolute;
+            top: 270px;
+        }
+
+        .data-table {
+            font-size: 22px;
+            text-align: left;
+            table-layout: fixed;
+        }
+
+        .data-name {
+            width: 120px;
+        }
+
+        .data-value {
+            width: 100px;
+            text-align: right;
+        }
+
+        .data-unit {
+            width: 30px;
+        }
+
+        .small {
+            font-size: 18px;
+        }
+
+        .large {
+            font-size: 30px;
+        }
+
+        .leftspace {
+            padding-left: 20px;
+        }
+
+        .grid-balance {
+            margin: 15px 15px 0;
+            font-size: 50px;
+            font-weight: bolder;
+            text-align: right;
+            table-layout: fixed;
+        }
+
+        .negative {
+            background-color: black;
+            color: white;
+        }
+
+        .grid-balance-value {
+            width: 160px;
+        }
+
+        .grid-balance-unit {
+            width: 50px;
+            font-size: 40px;
+            font-weight: normal;
+            text-align: left;
+        }
+
+        .grid-status {
+            width: 250px;
+            text-align: center;
+            margin: 5px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .bottom-container p {
+            margin: 0;
+            padding: 5px;
+            font-size: 15px;
+        }
+    </style>
+
     <body>
-        <div id="maindiv">
-            <h1>ESP-Epaper-Screen</h1>
-            <p>Debug. The data is:
-                <%= JSON.stringify(data) %></p>
-            <p>The timestamp is:
-                <%= new Date(); %></p>
-            <div class="screen-container">
-                <div class="left-container">
-                    <table class="data-table">
-                        <tr>
-                            <td class="data-name">Produktion:</td>
-                            <td class="large data-value"><b> <%= data.prod %>  </b></td>
-                            <td class="data-unit"><b>W</b></td>
-                        </tr>
-                        <tr>
-                            <td class="leftspace small data-name">Ost:</td>
-                            <td class="data-value"> <%= data.prod1 %>  </td>
-                            <td class="small data-unit">W</td>
-                        </tr>
-                        <tr>
-                            <td class="leftspace small data-name">Süd + West:</td>
-                            <td class="data-value"> <%= data.prod2 %> </td>
-                            <td class="small data-unit">W</td>
-                        </tr>
-                        <tr>
-                            <td class="data-name">Eigenbedarf:</td>
-                            <td class="large data-value"><b> <%= data.use %> </b></td>
-                            <td class="data-unit"><b>W</b></td>
-                        </tr>
-                    </table>
-                    <table class="<% if (data.grid >= 0) { %> negative <% } %> grid-balance">
-                        <tr>
-                            <td class="grid-balance-value"><%= Math.abs(data.grid) %> </td>
-                            <td class="grid-balance-unit">W</td>
-                        </tr>
-                    </table>
-                    <p class="grid-status"><%if(data.grid<0){%>Einspeisung<%}else{%>Netzbezug<%}%></p>
-                </div>
-                <div class="right-container">
-                    
-                </div>
-                <div class="bottom-container">
-                    <p>zul. aktualisiert: <%= data.timestamp %> </p>
-                </div>
+        <div class="screen-container">
+            <div class="left-container">
+                <table class="data-table">
+                    <tr>
+                        <td class="data-name">Produktion:</td>
+                        <td class="large data-value">
+                            <b>
+                                <%= data.prod %>
+                            </b>
+                        </td>
+                        <td class="data-unit">
+                            <b>W</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="leftspace small data-name">Ost:</td>
+                        <td class="data-value">
+                            <%= data.prod1 %>
+                        </td>
+                        <td class="small data-unit">W</td>
+                    </tr>
+                    <tr>
+                        <td class="leftspace small data-name">Süd + West:</td>
+                        <td class="data-value">
+                            <%= data.prod2 %>
+                        </td>
+                        <td class="small data-unit">W</td>
+                    </tr>
+                    <tr>
+                        <td class="data-name">Eigenbedarf:</td>
+                        <td class="large data-value">
+                            <b>
+                                <%= data.use %>
+                            </b>
+                        </td>
+                        <td class="data-unit">
+                            <b>W</b>
+                        </td>
+                    </tr>
+                </table>
+                <table class="<% if (data.grid >= 0) { %> negative <% } %> grid-balance">
+                    <tr>
+                        <td class="grid-balance-value"><%= Math.abs(data.grid) %> </td>
+                        <td class="grid-balance-unit">W</td>
+                    </tr>
+                </table>
+                <p class="grid-status"><%if(data.grid<0){%>Einspeisung<%}else{%>Netzbezug<%}%></p>
+            </div>
+            <div class="right-container">
+                
+            </div>
+            <div class="bottom-container">
+                <p>zul. aktualisiert: <%= data.timestamp %> </p>
             </div>
         </div>
     </body>
