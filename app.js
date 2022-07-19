@@ -1,39 +1,32 @@
 import express from 'express';
-import ModbusRTU from 'modbus-serial';
 
 const app = express();
 const router = express.Router();
+
+const dummyData = {
+  timestamp: '16:52:11',
+  prod1: 3500,
+  prod2: 1500,
+  prod: 1000,
+  use: 2000,
+  grid: -3000,
+  aut: 100
+}
 
 // serve requests from content in static directory
 app.use(express.static('static'));
 
 // set view engine and specify location of view files
 app.set('views', './views');
-app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
 
 // tell the app to use the router
-app.use('/', router);
+app.use('/screen', router);
 
 router.get('/', async (req, res) => {
-    res.render('index', {title: 'Epaper ALPHA'});
+    res.render('screen', {data: dummyData});
 });
 
-var mb_client_tp10 = new ModbusRTU();
-var modbusdata;
-mb_client_tp10.connectTCP("192.168.66.122", { port: 502 });
-mb_client_tp10.setID(3);
-
-setInterval(() => {
-    mb_client_tp10.readInputRegisters(30775, 2, function(err, data) {
-        modbusdata = data.data;
-        console.log("TP5 " + data.data);
-    });
-}, 10000);
-
-router.get('/data', async (req, res) => {
-    res.json(modbusdata);
-});
-
-const server = app.listen(3001, () => {
+const server = app.listen(8080, () => {
   console.log(`Express is running on port ${server.address().port}`);
 });
