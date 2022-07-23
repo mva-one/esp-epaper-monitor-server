@@ -1,0 +1,10 @@
+version: '3'
+services:
+  epaper-monitor-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mva-one/esp-epaper-monitor-server
+    restart: always
+    ports:
+      - "3003:3003"

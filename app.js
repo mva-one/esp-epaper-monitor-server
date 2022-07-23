@@ -43,12 +43,15 @@ router.get('/', async (req, res) => {
     res.render('index', {data: dummyData});
 });
 
-const server = app.listen(8080, () => {
+const server = app.listen(3003, () => {
   console.log(`Express is running on port ${server.address().port}`);
 });
 
 async function htmlToImage(html='') {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    executablePath: '/usr/bin/google-chrome',
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
   const page = await browser.newPage();
   await page.setContent(html);
   const content = await page.$('body');
