@@ -26,7 +26,8 @@ app.set('view engine', 'ejs');
 app.use('/', router);
 
 router.get('/screen', async (req, res) => {
-    res.render('screen', {data: dummyData});
+  const json_data = await getData();
+  res.render('screen', {data: json_data});
 });
 
 router.get('/image', async (req, res) => {
@@ -47,6 +48,12 @@ const server = app.listen(3003, () => {
   console.log(`Express is running on port ${server.address().port}`);
 });
 
+async function getData() {
+  let d = dummyData;
+  d.timestamp = new Date().toLocaleString();
+  return d;
+}
+
 async function htmlToImage(html='') {
   const browser = await puppeteer.launch({
     executablePath: '/usr/bin/google-chrome',
@@ -64,7 +71,8 @@ async function htmlToImage(html='') {
 
 async function getHtml() {
   try {
-    return await ejs.renderFile('views/screen.ejs', {data: dummyData});
+    const json_data = await getData();
+    return await ejs.renderFile('views/screen.ejs', {data: json_data});
   } catch (error) {
     console.error(error);
   }

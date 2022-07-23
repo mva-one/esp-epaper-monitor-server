@@ -12,8 +12,8 @@
             <h1>ESP-Epaper-Screen</h1>
             <p>Debug. The data is:
                 <%= JSON.stringify(data) %></p>
-            <p>The timestamp is:
-                <%= new Date(); %></p>
+            <p>The (server) timestamp is:
+                <%= new Date().toLocaleString(); %></p>
             <iframe src="/screen"></iframe>
         </div>
     </body>
