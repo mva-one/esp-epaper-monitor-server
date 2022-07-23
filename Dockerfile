@@ -14,18 +14,15 @@ RUN apt-get update && apt-get install curl gnupg -y \
   && apt-get install google-chrome-stable -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
-# set up unprivileged new user and group
-#RUN groupadd -g 1001 unpriv
-#RUN useradd -u 1001 -g unpriv -s /bin/sh -m unpriv
-
-# chown app folder
-#RUN chown -R unpriv:unpriv /app
-
-# switch to unprivileged user
-#USER unpriv:unpriv
+# configure locale
+RUN apt-get -y install locales tzdata
+ENV TZ="Europe/Berlin"
+RUN locale-gen --no-purge de_DE.UTF-8
+ENV LANG=de_DE.UTF-8
+ENV LC_TIME=de_DE.UTF-8
 
 # install dependencies
-COPY package*.json ./
+COPY package.json ./
 RUN npm install
 
 # copy needed app files to the container
