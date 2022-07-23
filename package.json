@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/mva-one/esp-epaper-monitor-server#readme",
   "devDependencies": {
-    "nodemon": "^2.0.18"
+    "nodemon": "^2.0.19"
   },
   "dependencies": {
     "ejs": "^3.1.8",
