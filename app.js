@@ -1,19 +1,56 @@
 import express from 'express';
 import puppeteer from 'puppeteer';
 import ejs from 'ejs';
+import fetch from 'node-fetch';
 
 const app = express();
 const router = express.Router();
 
-const dummyData = {
-  timestamp: '22:52:11',
-  prod1: 250,
-  prod2: 1500,
-  prod: 1750,
-  use: 1100,
-  grid: -650,
-  aut: 57
-};
+const screen_data = {
+  timestamp: '--:--:--',
+  prod1: 0,
+  prod2: 0,
+  prod: 0,
+  use: 0,
+  grid: 0,
+  aut: 0
+}
+
+setInterval(async () => {
+  try {    
+    // timestamp
+    screen_data.timestamp = new Date().toLocaleString();
+    
+    // total use
+    let r = await fetch('http://192.168.66.32:8080/rest/items/eigenverbrauch/state');
+    screen_data.use = trimPower(await r.text());
+
+    // total production
+    r = await fetch('http://192.168.66.32:8080/rest/items/gSolarPower/state');
+    screen_data.prod = trimPower(await r.text());
+
+    // production east and south
+    r = await fetch('http://192.168.66.32:8080/rest/items/inverter2ACWatt/state');
+    screen_data.prod1 = trimPower(await r.text());
+
+    // production west
+    r = await fetch('http://192.168.66.32:8080/rest/items/inverter1ACWatt/state');
+    screen_data.prod2 = trimPower(await r.text());
+
+    // net grid power
+    screen_data.grid = screen_data.use - screen_data.prod;
+
+    // autarky
+    // TODO
+
+  } catch (error) {
+    console.error('Error with read data from modbus! ' + error);
+  }
+}, 10000);
+
+function trimPower (input) {
+  return input.split('.')[0].split(' ')[0];
+}
 
 // serve requests from content in static directory
 app.use(express.static('static'));
@@ -26,8 +63,7 @@ app.set('view engine', 'ejs');
 app.use('/', router);
 
 router.get('/screen', async (req, res) => {
-  const json_data = await getData();
-  res.render('screen', {data: json_data});
+  res.render('screen', {data: screen_data});
 });
 
 router.get('/image', async (req, res) => {
@@ -41,18 +77,12 @@ router.get('/image', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-    res.render('index', {data: dummyData});
+    res.render('index', {data: screen_data});
 });
 
 const server = app.listen(3003, () => {
   console.log(`Express is running on port ${server.address().port}`);
 });
-
-async function getData() {
-  let d = dummyData;
-  d.timestamp = new Date().toLocaleString();
-  return d;
-}
 
 async function htmlToImage(html='') {
   const browser = await puppeteer.launch({
@@ -71,8 +101,7 @@ async function htmlToImage(html='') {
 
 async function getHtml() {
   try {
-    const json_data = await getData();
-    return await ejs.renderFile('views/screen.ejs', {data: json_data});
+    return await ejs.renderFile('views/screen.ejs', {data: screen_data});
   } catch (error) {
     console.error(error);
   }
