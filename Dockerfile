@@ -21,9 +21,6 @@ RUN locale-gen --no-purge de_DE.UTF-8
 ENV LANG=de_DE.UTF-8
 ENV LC_TIME=de_DE.UTF-8
 
-# install python for npm install
-RUN apt-get update && apt-get install python -y
-
 # install dependencies
 COPY package.json ./
 RUN npm install
